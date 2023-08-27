@@ -3,28 +3,33 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation";
 import { Typography, TextField, Button } from "@mui/material";
 import axios from "axios";
-import {Loading} from "./Loading";
+import {Loading} from "../Loading";
 import { NEXT_URL } from "@/config";
 import { courseState } from "@/store/atoms/course";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import { courseTitle, coursePrice, isCourseLoading, courseImage } from "@/store/selectors/course";
+import { useRouter } from "next/router";
 
 function Course() {
-    let { courseId } = useParams();
+
+    const router = useRouter();
+    let  courseId  = router.query.courseId;
+    console.log(courseId);
     const setCourse = useSetRecoilState(courseState);
     const courseLoading = useRecoilValue(isCourseLoading);
 
     useEffect(() => {
-        axios.get(`${NEXT_URL}/admin/course/${courseId}`, {
+        axios.get(`${NEXT_URL}/api/admin/course/${courseId}`, {
             method: "GET",
             headers: {
                 // "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then(res => {
+            console.log(res.data);
             setCourse({isLoading: false, course: res.data.course});
         })
         .catch(e => {
-            // setCourse({isLoading: false, course: null});
+             setCourse({isLoading: false, course: null});
         });
     }, []);
 
@@ -60,6 +65,14 @@ function GrayTopper() {
 
 function UpdateCard() {
     const [courseDetails, setCourse] = useRecoilState(courseState);
+
+    // const course = courseDetails.course || {
+    //     _id: "",
+    //     title: "",
+    //     description: "",
+    //     imageLink: "",
+    //     price: "",
+    // };
 
     const [title, setTitle] = useState(courseDetails.course.title);
     const [description, setDescription] = useState(courseDetails.course.description);
@@ -116,7 +129,7 @@ function UpdateCard() {
             <Button
                 variant="contained"
                 onClick={async () => {
-                    axios.put(`${NEXT_URL}/admin/courses/` + courseDetails.course._id, {
+                    axios.put(`${NEXT_URL}/admin/courses/` +course._id, {
                         title: title,
                         description: description,
                         imageLink: image,
@@ -125,11 +138,11 @@ function UpdateCard() {
                     }, {
                         headers: {
                             "Content-type": "application/json",
-                            "Authorization": "Bearer " + localStorage.getItem("token")
+                            // "Authorization": "Bearer " + localStorage.getItem("token")
                         }
                     });
                     let updatedCourse = {
-                        _id: courseDetails.course._id,
+                        _id: course._id,
                         title: title,
                         description: description,
                         imageLink: image,
@@ -143,7 +156,7 @@ function UpdateCard() {
 </div>
 }
 
-function CourseCard(props) {
+function CourseCard() {
     const title = useRecoilValue(courseTitle);
     const imageLink = useRecoilValue(courseImage);
 

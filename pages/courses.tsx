@@ -14,7 +14,7 @@ function Courses() {
                 // Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-        console.log(response.data)
+        //console.log(response.data)
         setCourses(response.data.courses)
     }
 

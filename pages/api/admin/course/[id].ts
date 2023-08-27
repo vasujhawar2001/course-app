@@ -9,9 +9,9 @@ export default async(req: NextApiRequest, res : NextApiResponse) => {
         const db = client.db("Courses");
 
         const { id } = req.query;
-
+        console.log(id);
         const course = await db.collection("courses").findOne({
-            _id: new ObjectId(id as string),
+            _id: new ObjectId(id as string), // Convert the string ID to ObjectId
         });
 
         if(course){
@@ -23,5 +23,6 @@ export default async(req: NextApiRequest, res : NextApiResponse) => {
     }
     catch(e){
         console.error(e);
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
