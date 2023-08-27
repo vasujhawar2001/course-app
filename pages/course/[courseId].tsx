@@ -14,7 +14,7 @@ function Course() {
 
     const router = useRouter();
     let  courseId  = router.query.courseId;
-    console.log(courseId);
+    // console.log(courseId);
     const setCourse = useSetRecoilState(courseState);
     const courseLoading = useRecoilValue(isCourseLoading);
 
@@ -25,7 +25,7 @@ function Course() {
                 // "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             setCourse({isLoading: false, course: res.data.course});
         })
         .catch(e => {
