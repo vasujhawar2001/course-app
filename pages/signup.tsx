@@ -55,8 +55,8 @@ const Login = () => {
                             password: password
                         })
                         let data = response.data;
-                        //localStorage.setItem("token", data.token);
-                        // window.location = "/"
+                        localStorage.setItem("token", data.token);
+                        
                         setUser({userEmail: email, isLoading: false})
                         router.push("/courses")
                     }}

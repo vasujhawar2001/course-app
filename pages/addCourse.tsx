@@ -54,8 +54,8 @@ function AddCourse() {
                     published: true
                 }, {
                     headers: {
-                        "Content-type": "application/json"
-                        // </Card>"Authorization": "Bearer " + localStorage.getItem("token")
+                        "Content-type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token")
                     }
                 });
                 const data = res.data;

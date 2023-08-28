@@ -5,6 +5,10 @@ import {useSetRecoilState, useRecoilValue} from "recoil";
 import { userEmailState } from "../store/selectors/userEmail"
 import { useRouter } from "next/router";
 import { userState } from "@/store/atoms/user";
+import { Loading } from "./Loading";
+import { useEffect } from "react";
+import { NEXT_URL } from "@/config";
+import axios from "axios";
 
 function Appbar({}) {
     const router = useRouter()
@@ -12,8 +16,26 @@ function Appbar({}) {
     const userEmail = useRecoilValue(userEmailState);
     const setUser = useSetRecoilState(userState);
 
+
+    useEffect(() => {
+        //console.log("token - " + localStorage.getItem("token"));
+        initMe();
+    }, []);
+
+    async function initMe(){
+        const response = await axios.get(`${NEXT_URL}/api/auth/me`, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+
+        if (response.data.username) {
+            setUser(response.data.username)
+        }
+    }
+
     if (userLoading) {
-        return <></>
+        return <Loading />
     }
 
     if (userEmail) {
@@ -55,6 +77,7 @@ function Appbar({}) {
                                 isLoading: false,
                                 userEmail: null
                             })
+                            router.push("/");
                         }}
                     >Logout</Button>
                 </div>

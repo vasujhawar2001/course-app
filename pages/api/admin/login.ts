@@ -1,5 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "@/lib/mongodb";
+import jwt from "jsonwebtoken";
+import { SECRET } from "@/config";
+
+if (!SECRET) {
+    throw new Error('Invalid/Missing environment variable: "SECRET-JWT"')
+  }
 
 export default async(req : NextApiRequest, res : NextApiResponse) => {
     try {
@@ -14,7 +20,8 @@ export default async(req : NextApiRequest, res : NextApiResponse) => {
              res.status(403).json({ message: 'Admin already exists' });
              return;
            } else {
-            res.json({ message: 'Logged in successfully' });
+            const token = jwt.sign({ username, role: 'admin' }, SECRET!, { expiresIn: '1h' });
+            res.json({ message: 'Logged in successfully', token });
            }
     } catch (e) {
         console.error(e);

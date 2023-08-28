@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "@/lib/mongodb";
+import { authenticateJwt } from "@/lib/middleware";
 
 
 export default async(req: NextApiRequest, res : NextApiResponse) => {
@@ -16,3 +17,4 @@ export default async(req: NextApiRequest, res : NextApiResponse) => {
         console.error(e);
     }
 }
+

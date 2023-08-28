@@ -4,14 +4,15 @@ import axios from "axios";
 import { useRouter } from "next/router.js";
 import { Course } from "@/store/atoms/course.js";
 import { NEXT_URL } from "@/config";
+import { authenticateJwt } from "@/lib/middleware";
 
 function Courses() {
     const [courses, setCourses] = useState([]);
 
-    const init = async () => {
+    const init1 = async () => {
         const response = await axios.get(`${NEXT_URL}/api/admin/courses`, {
             headers: {
-                // Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
         //console.log(response.data)
@@ -19,7 +20,7 @@ function Courses() {
     }
 
     useEffect(() => {
-        init();
+        init1();
     }, []);
 
     return <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>

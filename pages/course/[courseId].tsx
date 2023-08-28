@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation";
 import { Typography, TextField, Button } from "@mui/material";
 import axios from "axios";
-import {Loading} from "../Loading";
+import {Loading} from "../../components/Loading";
 import { NEXT_URL } from "@/config";
 import { courseState } from "@/store/atoms/course";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
@@ -20,9 +20,8 @@ function Course() {
 
     useEffect(() => {
         axios.get(`${NEXT_URL}/api/admin/course/${courseId}`, {
-            method: "GET",
             headers: {
-                // "Authorization": "Bearer " + localStorage.getItem("token")
+                "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then(res => {
             // console.log(res.data);
@@ -73,6 +72,8 @@ function UpdateCard() {
     //     imageLink: "",
     //     price: "",
     // };
+
+    // TYPESCRIPT HELP
 
     const [title, setTitle] = useState(courseDetails.course.title);
     const [description, setDescription] = useState(courseDetails.course.description);
